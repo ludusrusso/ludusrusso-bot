@@ -1,0 +1,20 @@
+{
+  "name": "ludusrusso-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node-dev src/main.ts",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "telegraf": "^4.8.3"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.7.4"
+  }
+}

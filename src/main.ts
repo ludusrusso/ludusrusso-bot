@@ -1,4 +1,5 @@
 import { Telegraf } from "telegraf";
+import fastify from "fastify";
 
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 if (!botToken) {
@@ -46,4 +47,32 @@ const parseStats = (msg: string) => {
     .filter((n) => !isNaN(n));
 };
 
-bot.launch();
+const whBaseUrl = process.env.WEBHOOK_BASE_URL;
+if (whBaseUrl) {
+  runWithWebhook(whBaseUrl); // dobbiamo creare questa funzione
+} else {
+  bot.launch();
+}
+
+function runWithWebhook(whBaseUrl: string) {
+  const port = 3000;
+  const app = fastify();
+
+  const path = `/telegraf/${bot.secretPathComponent()}`;
+  const url = new URL(path, whBaseUrl).href;
+
+  bot.telegram.setWebhook(url).then(() => {
+    console.log("Webhook is set!: ", url);
+  });
+
+  app.post(path, (req, rep) => bot.handleUpdate(req.body as any, rep.raw));
+
+  app
+    .listen({
+      host: "0.0.0.0",
+      port: 3000,
+    })
+    .then(() => {
+      console.log("🚀 Listening on port: " + port);
+    });
+}

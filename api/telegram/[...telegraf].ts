@@ -1,4 +1,5 @@
-import { createBot } from "../../bot";
+import { createBot } from "../../src/bot";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 if (!botToken) {
@@ -21,6 +22,9 @@ bot.telegram.setWebhook(url).then(() => {
   console.log("Webhook is set!: ", url);
 });
 
-export default function handler(req: any, rep: any) {
-  bot.handleUpdate(req.body as any, rep.raw);
+export default function handler(
+  request: VercelRequest,
+  response: VercelResponse
+) {
+  bot.handleUpdate(request.body as any, response);
 }

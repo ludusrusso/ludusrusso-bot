@@ -19,13 +19,10 @@ export default async function handler(
   request: VercelRequest,
   response: VercelResponse
 ) {
-  try {
-    if (request.query.secret === bot.secretPathComponent()) {
-      return await bot.handleUpdate(request.body, response);
-    }
-  } catch (e) {
-    console.error(e);
-    response.status(500).send("Internal error");
-  }
-  return response.status(404).send("Not found");
+  const path = `/api/telegram/?secret=${bot.secretPathComponent()}`;
+  const url = new URL(path, "https://" + whBaseUrl).href;
+  await bot.telegram.setWebhook(url).then(() => {
+    console.log("Webhook is set!: ", url);
+  });
+  return response.send({ status: "ok" });
 }

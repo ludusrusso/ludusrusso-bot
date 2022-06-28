@@ -27,9 +27,10 @@ export default async function handler(
     bot.telegram.setWebhook(url).then(() => {
       console.log("Webhook is set!: ", url);
     });
+    response.send({ status: "ok" });
   }
   if (request.query.secret_hash === bot.secretPathComponent()) {
     await bot.handleUpdate(request.body, response);
+    return;
   }
-  response.send({ status: "ok" });
 }

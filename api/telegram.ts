@@ -1,4 +1,4 @@
-import { createBot } from "../../src/bot";
+import { createBot } from "../src/bot";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -15,7 +15,7 @@ if (!whBaseUrl) {
 
 const bot = createBot(botToken);
 
-const path = `/telegram/${bot.secretPathComponent()}`;
+const path = `/api/telegram/?secret_hash=${bot.secretPathComponent()}`;
 const url = new URL(path, whBaseUrl).href;
 
 bot.telegram.setWebhook(url).then(() => {

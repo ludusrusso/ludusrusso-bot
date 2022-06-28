@@ -17,7 +17,7 @@ const bot = createBot(botToken);
 
 const path = `/api/telegram/?secret_hash=${bot.secretPathComponent()}`;
 console.log(whBaseUrl, process.env);
-const url = new URL(path, whBaseUrl).href;
+const url = new URL(path, "https://" + whBaseUrl).href;
 
 bot.telegram.setWebhook(url).then(() => {
   console.log("Webhook is set!: ", url);

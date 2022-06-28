@@ -24,10 +24,10 @@ export default async function handler(
     const path = `/api/telegram/?secret_hash=${bot.secretPathComponent()}`;
     const url = new URL(path, "https://" + whBaseUrl).href;
 
-    bot.telegram.setWebhook(url).then(() => {
+    const res = await bot.telegram.setWebhook(url).then(() => {
       console.log("Webhook is set!: ", url);
     });
-    response.send({ status: "ok" });
+    response.send({ status: "ok", res });
   }
   if (request.query.secret_hash === bot.secretPathComponent()) {
     await bot.handleUpdate(request.body, response);

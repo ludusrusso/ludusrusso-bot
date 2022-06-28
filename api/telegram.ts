@@ -22,9 +22,10 @@ bot.telegram.setWebhook(url).then(() => {
   console.log("Webhook is set!: ", url);
 });
 
-export default function handler(
+export default async function handler(
   request: VercelRequest,
   response: VercelResponse
 ) {
-  bot.handleUpdate(request.body as any, response);
+  await bot.handleUpdate(request.body, response);
+  response.send({ status: "ok" });
 }
